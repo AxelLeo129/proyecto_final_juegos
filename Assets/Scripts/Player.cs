@@ -9,13 +9,13 @@ public class Player : MonoBehaviour
 
     private const string HORIZONTAL = "Horizontal";
     private const string VERTICAL = "Vertical";
-
     private float input_horizontal;
     private float input_vertical;
     private float angulo_direccion;
     private float fuerza_breack_actual;
     private bool is_braking;
     private bool is_paused = false;
+    private new AudioSource audio;
 
     [SerializeField] private float fuerza_motor;
     [SerializeField] private float fuerza_break;
@@ -31,6 +31,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject boton_pausa;
     [SerializeField] private GameObject boton_reanudar;
     [SerializeField] private GameObject boton_next;
+    [SerializeField] private GameObject boton_reiniciar;
     [SerializeField] private GameObject panel_general;
     [SerializeField] private Text text_title;
     [SerializeField] private Text text_message;
@@ -39,7 +40,8 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        GameObject.FindObjectOfType<AudioManager>().startCar();
+        this.audio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -47,17 +49,13 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
             this.TogglePause();
-        //print(this.frontLeftWheelCollider.CompareTag("Win"));
-        //if(this.frontLeftWheelCollider.CompareTag("Win") && this.frontRightWheelCollider.CompareTag("Win") && this.rearLeftWheelCollider.CompareTag("Win") && this.rearRightWheelCollider.CompareTag("Win"))
-        //{
-        //    print("Winnadfad");
-        //}
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Obstacle"))
         {
+            GameObject.FindObjectOfType<AudioManager>().gameOver();
             ToggleGameOver();
         }
         if(collision.gameObject.CompareTag("Win"))
@@ -81,6 +79,9 @@ public class Player : MonoBehaviour
     {
         this.text_title.text = "Game Over";
         this.text_message.text = "No golpee otros autos u obstáculos. \nEvite salirse de la carretera.";
+        this.boton_reanudar.SetActive(false);
+        this.boton_next.SetActive(false);
+        this.boton_reiniciar.SetActive(true);
         TogglePanel();
     }
 
@@ -88,6 +89,9 @@ public class Player : MonoBehaviour
     {
         this.text_title.text = "Win";
         this.text_message.text = "Felicidades has ganado.s";
+        this.boton_reanudar.SetActive(false);
+        this.boton_next.SetActive(true);
+        this.boton_reiniciar.SetActive(false);
         TogglePanel();
     }
 
@@ -97,6 +101,7 @@ public class Player : MonoBehaviour
         this.text_message.text = "";
         this.boton_reanudar.SetActive(true);
         this.boton_next.SetActive(false);
+        this.boton_reiniciar.SetActive(true);
         TogglePanel();
     }
 
@@ -129,6 +134,14 @@ public class Player : MonoBehaviour
         this.frontLeftWheelCollider.motorTorque = this.input_vertical * this.fuerza_motor;
         this.frontRightWheelCollider.motorTorque = this.input_vertical * this.fuerza_motor;
         this.fuerza_breack_actual = this.is_braking ? this.fuerza_break : 0f;
+        /*print("Baking");
+        print(this.is_braking);
+        print("ejecutando audio");
+        print(this.audio.isPlaying);
+        if (this.is_braking && !this.audio.isPlaying)
+            this.audio.Play();
+        else if(!this.is_braking && this.audio.isPlaying)
+            this.audio.Stop();*/
         ApplyBreaking();
     }
 
