@@ -6,7 +6,6 @@ public class AudioManager : MonoBehaviour
 {
     [SerializeField] private AudioClip choque;
     [SerializeField] private AudioClip ganar;
-    [SerializeField] private AudioClip aceleracion;
     [SerializeField] private AudioClip encender;
 
     private new AudioSource audio;
@@ -14,9 +13,9 @@ public class AudioManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        this.audio = GetComponent<AudioSource>();   
+        this.audio = GetComponent<AudioSource>();
     }
-
+     
     // Update is called once per frame
     void Update()
     {
@@ -28,14 +27,10 @@ public class AudioManager : MonoBehaviour
         this.audio.PlayOneShot(this.encender);
     }
 
-    public void moveCar()
-    {
-        this.audio.PlayOneShot(this.aceleracion);
-    }
-
     public void gameOver()
     {
         this.audio.PlayOneShot(this.choque);
+        this.audio.volume = 0.3f;
     }
 
     public void winGame()

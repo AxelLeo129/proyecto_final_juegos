@@ -5,6 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+
+    [SerializeField] private GameObject main_menu;
+    [SerializeField] private GameObject instructions;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -15,6 +19,18 @@ public class MainMenu : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void ShowInstructions()
+    {
+        this.main_menu.SetActive(false);
+        this.instructions.SetActive(true);
+    }
+
+    public void ShowMainMenu()
+    {
+        this.instructions.SetActive(false);
+        this.main_menu.SetActive(true);
     }
 
     public void StartGame()

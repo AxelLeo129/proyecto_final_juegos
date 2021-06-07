@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Obstacle
   - Win
+  - Audio
   layers:
   - Default
   - TransparentFX
